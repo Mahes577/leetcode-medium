@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+// Function to find the length of the longest increasing subsequence
+int LIS(vector<ll>& v) {
+    // Temporary array to store the subsequence
+    vector<ll> temp;
+
+    for (ll num : v) {
+        // Find the position where this number should be placed or replaced
+        auto it = lower_bound(temp.begin(), temp.end(), num);
+        
+        // If the number is greater than all elements, append it to the sequence
+        if (it == temp.end()) {
+            temp.push_back(num);
+        }
+        // Otherwise, replace the element at the found position
+        else {
+            *it = num;
+        }
+    }
+
+    // The size of the temp array will give us the length of the LIS
+    return temp.size();
+}
+
+int main() {
+    ll n;
+    cin >> n;
+    vector<ll> v(n);
+    
+    // Input the array
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+
+    // Calculate the length of the longest increasing subsequence
+    int lis_length = LIS(v);
+
+    // Output the result
+    cout << lis_length << endl;
+
+    return 0;
+}
