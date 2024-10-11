@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using lli = long long int;
+#define run ios::sync_with_stdio (false); cin.tie (0); cout.tie (0);
+#define faster ios_base::sync_with_stdio(0); cin.tie(nullptr);
+#define yy cout<<"YES"<<endl;
+#define no cout<<"NO"<<endl;
+#define nl endl;
+
+ll gcd(ll a, ll b) {
+    if(b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+ll lcm(ll a, ll b) {
+    return (a / gcd(a, b)) * b;
+}
+
+const int MOD = 1e9+7;
+
+int main() {
+    ll n;
+    cin >> n;
+    vector<ll> v(n);
+    
+    // Input the array
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+    
+    // DP array for storing the lengths of increasing subsequences
+    vector<vector<ll>> dp(n + 1, vector<ll>(n + 1, 0));
+
+    // Iterative bottom-up approach (tabulation)
+    for (int i = n - 1; i >= 0; i--) {
+        for (int prev = i - 1; prev >= -1; prev--) {
+            // Option 1: Do not take the current element
+            ll nottake = dp[i + 1][prev + 1];
+            
+            // Option 2: Take the current element if it is greater than the previous one
+            ll take = 0;
+            if (prev == -1 || v[i] > v[prev]) {
+                take = 1 + dp[i + 1][i + 1];
+            }
+            
+            // Store the maximum of taking or not taking the current element
+            dp[i][prev + 1] = max(take, nottake);
+        }
+    }
+    
+    // The result is stored in dp[0][-1+1] == dp[0][0]
+    cout << dp[0][0] << endl;
+}
