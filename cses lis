@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using lli = long long int;
+#define pb push_back;
+#define run ios::sync_with_stdio (false); cin.tie (0); cout.tie (0);
+#define faster ios_base::sync_with_stdio(0); cin.tie(nullptr);
+#define yy cout<<"YES"<<endl;
+#define no cout<<"NO"<<endl;
+#define nl endl;
+#include <unordered_set>
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+typedef long long int ll;
+bool isprime(int n){
+    if(n<2) return false;
+    if(n==2) return true;
+    if(n%2==0) return false;
+    for(int i=3;i*i<=n;i=i+2){
+        if(n%i==0) return false;
+    }
+    return true;
+}
+ll gcd(ll a, ll b) {
+    if(b==0)
+    return a;
+    return gcd(b,a%b);
+}
+ll lcm(ll a,ll  b){
+    return (a/gcd(a,b))*b;
+}
+ll mod(ll a,ll b){
+    return((a%b)+b);
+}
+const int MOD=1e9+7;
+int f(int i,int prev,vector<ll>&v,vector<vector<ll>>&dp){
+    if(i==v.size()){
+        return 0;
+    }
+    if(dp[i][prev+1]!=-1){
+        return dp[i][prev+1];
+    }
+    int nottake=f(i+1,prev,v,dp);
+    int take=INT_MIN;
+    if(prev==-1||v[i]>v[prev]){
+        take=1+f(i+1,i,v,dp);
+    }
+    return dp[i][prev+1]=max(take,nottake);
+}
+int main(){
+    ll n;
+    cin>>n;
+    vector<ll>v(n);
+    for(int i=0;i<n;i++){
+        cin>>v[i];
+    }
+    vector<vector<ll>>dp(n,vector<ll>(n+1,-1));
+    int h=f(0,-1,v,dp);
+    cout<<h<<endl;
+}
